@@ -1,116 +1,80 @@
 <template>
   <v-container fluid>
     <v-layout row>
+      
+      <!-- Court and Calendar -->
+      <v-flex xs12 lg5>
+        
+        <!-- Court Card -->
+        <v-flex xs12>
+          <v-card>
+            <v-card-media
+              v-bind:src="'https://www.jouer-club.cl/images/' + court.avatar"
+              height="200px"
+              >
+            </v-card-media>
 
-      <v-flex xs12 md6 lg4>
+            <v-card-title primary-title>
+              <div>
+                <div class="headline">CANCHA: {{ court.nombre }}</div>
+                <span class="grey--text">PARTIDOS JUGADOS: {{ count_meetings.total }}</span>
+              </div>
+            </v-card-title>
 
-      <v-flex>
-        <v-card>
-          <v-card-media
-            src="/static/doc-images/court.jpg"
-            height="200px"
-          >
-          </v-card-media>
-          <v-card-title primary-title>
-            <div>
-              <div class="headline">CANCHA: {{ court.nombre }}</div>
-              <span class="grey--text">PARTIDOS JUGADOS: {{ count_meetings.total }}</span>
-            </div>
-          </v-card-title>
+            <v-card-actions>
+              <router-link :to="{ name: 'facilities', params: { id: this.$route.params.id }}">
+              <v-btn flat color="accent">Ver Recursos</v-btn>
+              </router-link>
+            </v-card-actions>
 
-          <v-card-actions>
+          </v-card>
+        </v-flex>
 
-          <router-link :to="{ name: 'facilities', params: { id: this.$route.params.id }}">
-            <v-btn flat color="accent">Ver Recursos</v-btn>
-          </router-link>
-
-          </v-card-actions>
-
-        </v-card>
-      </v-flex>
-
-        <v-flex>
+        <!-- Picker -->
+        <v-flex xs12>
           <v-date-picker
+            ref="picker"
             v-model="date"
             full-width
-            :events="getMeetings"
           ></v-date-picker>
         </v-flex>
 
       </v-flex>
 
-      <v-flex xs12 md6 lg8 order-lg2>
 
-        <v-flex>
-          <v-expansion-panel inset>
-            <v-expansion-panel-content v-for="meeting in meetings" :key="meeting.identificador">
-             
-              <div slot="header" v-on:click="getParticipants(meeting.identificador)">
-                    <v-chip color="primary" text-color="white">
-                      <v-avatar>
-                        <v-icon>check_circle</v-icon>
-                      </v-avatar>
-                      {{ viewStatus(meeting.estado).title }}
-                    </v-chip>
-                    Desde: {{ meeting.inicio}} / Hasta: {{ meeting.termino}} {{ meeting.identificador }}
-              </div>
+      <!-- Meetings -->
+      <v-flex xs12 l7>
+        <v-subheader>Encuentros Registrados</v-subheader>
 
-              <v-card>
-                <v-card-text>
+        <v-alert v-if="errors && errors.length" :value="true" outline color="error" icon="warning">
+        {{ errors }}
+        </v-alert>
 
-                  <v-expansion-panel inset>
-                    <v-expansion-panel-content v-for="(participant,i) in participants" :key="i">
-                      <div slot="header">
+        <v-expansion-panel focusable>
+          <v-expansion-panel-content v-for="(meeting, index) in meetings" :key="index">
+            <div slot="header" v-on:click="getParticipants(meeting.identificador)">
+              <span class="primary--text">Creado por: </span> {{ meeting.creador }}
+              <v-divider></v-divider>
+              <span class="success--text">Inicio:</span> <span class="grey--text"> {{ meeting.inicio }} </span>
+              <span class="error--text">Termino:</span> <span class="grey--text"> {{ meeting.termino }} </span>
+            </div>
+            <v-card>
+                <v-card-text class="grey lighten-3">
 
-                          <v-chip>
-                            <v-avatar>
-                              <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="trevor">
-                            </v-avatar>
-                            {{participant.alias}}
-                          </v-chip>
-                      </div>
-                      <v-card>
-                        <v-card-text class="transparent text-xs-center">
-                          
-                          <!-- EMAIL -->
-                            <v-chip outline color="pink">
-                              <v-avatar>
-                                <v-icon>mail</v-icon>
-                              </v-avatar>
-                              {{ participant.correo }}
-                            </v-chip>
-                          <!-- / EMAIL-->
+                  <div class="text-xs-center" v-for="(user, index) in participants" :key="index">
+                  <v-chip close>
+                  <v-avatar>
+                  <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="trevor">
+                  </v-avatar>
+                  {{ participants.nombre }}
+                  </v-chip>
+                  </div>
 
-                          <!-- PHONE -->
-                            <v-chip outline color="cyan">
-                              <v-avatar>
-                                <v-icon>phone</v-icon>
-                              </v-avatar>
-                              +{{ participant.celular }}
-                            </v-chip>
-                          <!-- / PHONE-->
-
-
-                          <!-- JOIN US -->
-                            <v-chip outline color="orange">
-                              <v-avatar>
-                                <v-icon>how_to_reg</v-icon>
-                              </v-avatar>
-                              {{ participant.fechaCreacion }}
-                            </v-chip>
-                          <!-- / JOIN US-->
-                          
-                        </v-card-text>
-                      </v-card>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-
+                    
                 </v-card-text>
-              </v-card>
-
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-flex>
+            </v-card>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
 
       </v-flex>
 
@@ -120,75 +84,70 @@
 
 <script>
 import {HTTP} from '@/axios-common'
-  export default {
-    data: () => ({
-      status: [
-        { color: "color='success'", title: 'En Curso' },
-        { color: "color='accent'", title: 'Proximo' },
-        { color: "color='info'", title: 'Finalizado' }      
-      ],
-      date: null,
-      meetings: [],
-      participants: [],
-      court: [],
-      count_meetings: [],
-      errors: []
-    }),
+export default {
+  data: () => ({
+    status: [
+      { color: "color='success'", title: 'En Curso' },
+      { color: "color='accent'", title: 'Proximo' },
+      { color: "color='info'", title: 'Finalizado' }      
+    ],
+    date: null,
+    court: [],
+    meetings: [],
+    participants: [],
+    count_meetings: [],
+    errors: []
+  }),
 
-    created() {
-        this.getMeetings(),
-        this.getCourt()
+  created() {
+    this.getCourt(),
+    this.getMeetings()
+  },
+
+  methods: {
+    getCourt() {
+      HTTP.get(`courts/`+this.$route.params.id, {
+      })
+      .then(response => {
+        this.court = response.data.data
+      })
+      .catch(errorResponse => {
+        this.errors = errorResponse.response.data.error
+      })
     },
 
-    methods: {
-      getMeetings() {
-        HTTP.get("courts/"+this.$route.params.id+"/meetings")
-        .then(response => {
-          this.meetings = response.data.data
-          this.count_meetings = response.data.meta.pagination
-          console.log(response.data.data);
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-      },
+    getMeetings() {
+      HTTP.post("courts/"+this.$route.params.id+"/meetings")
+      .then(successResponse => {
+        this.meetings = successResponse.data.data
+        this.count_meetings = successResponse.data.meta.pagination
+      })
+      .catch(errorResponse => {
+        this.errors = errorResponse.response.data.error
+      })
+    },
 
-      getParticipants(id) {
-        this.participants = null,
-        HTTP.get('meetings/'+id+'/participants')
-        .then(response => {
-          this.participants = response.data.data
-          console.log(response.data.data);
-          
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-      },
+    getParticipants(id) {
+      this.participants = null,
+      HTTP.get('meetings/'+id+'/participants')
+      .then(response => {
+        this.participants = response.data.data
+      })
+      .catch(errorResponse => {
+        this.errors = errorResponse.response.data.error
+      })
+    },
 
-      getCourt() {
-        HTTP.get(`courts/`+this.$route.params.id, {
-        })
-        .then(response => {
-          this.court = response.data.data
-          console.log(response.data);
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-      },
-
-      viewStatus(value){
-        if (value == 'now') {
-          return this.status[0]
-        } if (value == 'pending') {
-          return this.status[1]
-        } else {
-          return this.status[2]
-        }
+    viewStatus(value){
+      if (value == 'now') {
+        return this.status[0]
+      } if (value == 'pending') {
+        return this.status[1]
+      } else {
+        return this.status[2]
       }
+    }
 
-
-    },
   }
+}
 </script>

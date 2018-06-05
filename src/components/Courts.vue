@@ -102,7 +102,7 @@
     <!-- SNACKBAR -->
 
     <!-- SNACKBAR ERRORS -->
-    <v-snackbar v-model="snackbar_errors">
+    <v-snackbar v-model="snackbar_errors" :top="true" :right="true">
       {{ notification }}
       <v-btn dark flat @click.native="snackbar_errors = false" color="error">Cerrar</v-btn>
     </v-snackbar>
