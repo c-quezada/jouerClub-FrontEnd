@@ -17,7 +17,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="teal" class="white--text" @click="setLayout('app-layout')">Ingresar</v-btn>
+                <v-btn color="teal" flat class="white--text" @click="setLayout('app-layout')">Ingresar</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
