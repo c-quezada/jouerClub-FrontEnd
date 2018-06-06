@@ -102,7 +102,6 @@
       dialog: false,
       drawer: null,
       items: [
-        { icon: 'dashboard', text: 'Estadisticas', href: '#' },
         { icon: 'view_module', text: 'Canchas', href: '#' },
         {
           icon: 'keyboard_arrow_up',

@@ -20,10 +20,11 @@
                 <span class="grey--text">PARTIDOS JUGADOS: {{ count_meetings.total }}</span>
               </div>
             </v-card-title>
-
+            
             <v-card-actions>
+              <v-spacer></v-spacer>
               <router-link :to="{ name: 'facilities', params: { id: this.$route.params.id }}">
-              <v-btn flat color="accent">Ver Recursos</v-btn>
+              <v-btn flat color="primary">Ver Recursos</v-btn>
               </router-link>
             </v-card-actions>
 
@@ -33,10 +34,12 @@
         <!-- Picker -->
         <v-flex xs12>
           <v-date-picker
-            ref="picker"
-            v-model="date"
+            v-model="datepicker"
             full-width
-          ></v-date-picker>
+          >
+          <v-btn :return-value.sync="datepicker" block @click="pickerDate()" color="success">Ver Partidos</v-btn>
+          </v-date-picker>
+
         </v-flex>
 
       </v-flex>
@@ -50,16 +53,14 @@
         {{ errors }}
         </v-alert>
 
-        <v-expansion-panel focusable>
+        <v-expansion-panel popout>
           <v-expansion-panel-content v-for="(meeting, index) in meetings" :key="index">
             <div slot="header" v-on:click="getParticipants(meeting.identificador)">
-              <span class="primary--text">Creado por: </span> {{ meeting.creador }}
-              <v-divider></v-divider>
               <span class="success--text">Inicio:</span> <span class="grey--text"> {{ meeting.inicio }} </span>
               <span class="error--text">Termino:</span> <span class="grey--text"> {{ meeting.termino }} </span>
             </div>
             <v-card>
-                <v-card-text class="grey lighten-3">
+                <v-card-text class="grey lighten-4">
 
                   <div class="text-xs-center" v-for="(user, index) in participants" :key="index">
                     <v-chip outline class="primary" v-on:click="getUser(user.identificador)">
@@ -152,8 +153,9 @@ export default {
       { color: "color='info'", title: 'Finalizado' }      
     ],
     dialog: false,
-    date: null,
+    datepicker: null,
     userInfo: [],
+    creator: null,
     court: [],
     meetings: [],
     participants: [],
@@ -211,16 +213,26 @@ export default {
       })
     },
 
-    viewStatus(value){
-      if (value == 'now') {
-        return this.status[0]
-      } if (value == 'pending') {
-        return this.status[1]
-      } else {
-        return this.status[2]
-      }
+    pickerDate () {
+      alert(this.datepicker),
+      HTTP.post("courts/"+this.$route.params.id+"/meetings", {
+        date: this.datepicker
+      })
+      .then(successResponse => {
+        // modify data
+        this.meetings = successResponse.data.data
+        this.count_meetings = successResponse.data.meta.pagination
+        this.datepicker = null
+        // DOM is not updated yet
+        this.$nextTick(function () {
+          // DOM is now updated
+          console.log(this.meetings)
+        })
+      })
+      .catch(errorResponse => {
+        this.errors = errorResponse.response.data.error
+      })
     }
-
   }
 }
 </script>
