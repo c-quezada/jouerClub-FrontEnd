@@ -1,33 +1,48 @@
 <template>
   <v-container fluid>    
+  
+    <v-layout row>
+      <v-flex xs12 md8>
+        <v-card dark tile flat color="transparent">
+          <v-card-text>
 
-    <v-layout row wrap>
-        
-       
+            <v-flex xs12>
+              <v-alert :value="true" outline color="indigo" icon="label_important">
+                <span class="indigo--text">Nombre: </span> 
+                <span class="text-xs-right">{{ facility.nombre }}</span>
+              </v-alert>
+            </v-flex>
 
-          <v-flex xs12 md6 lg3>
-            <v-alert :value="true" outline color="indigo" icon="label_important">
-              {{ facility.nombre }}
-            </v-alert>
-          </v-flex>
+            <v-flex xs12>
+              <v-alert :value="true" outline color="accent" icon="loyalty">
+                <span class="accent--text">Marca: </span> 
+                <span class="text-xs-right">{{ facility.marca }}</span>
+              </v-alert>
+            </v-flex>
 
-          <v-flex xs12 md6 lg3>
-            <v-alert :value="true" outline color="accent" icon="loyalty">
-              {{ facility.marca }}
-            </v-alert>
-          </v-flex>
+            <v-flex xs12>
+              <v-alert :value="true" outline color="primary" icon="attach_money">
+                <span class="primary--text">Precio: </span> 
+                <span class="text-xs-right">{{ facility.precio }}</span>
+              </v-alert>
+            </v-flex>
 
-          <v-flex xs12 md6 lg3>
-            <v-alert :value="true" outline color="primary" icon="attach_money">
-              {{ facility.precio }}
-            </v-alert>
-          </v-flex>
+            <v-flex xs12>
+              <v-alert :value="true" outline color="deep-purple" icon="shopping_cart">
+                <span class="deep-purple--text">Fecha Compra: </span> 
+                <span class="text-xs-right">{{ facility.fechaCompra }}</span>
+              </v-alert>
+            </v-flex>
 
-          <v-flex xs12 md6 lg3>
-            <v-alert :value="true" outline color="deep-purple" icon="shopping_cart">
-              {{ facility.fechaCompra }}
-            </v-alert>
-          </v-flex>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12 md4>
+        <v-card dark tile flat color="red darken-4">
+          <v-card-text>#2</v-card-text>
+        </v-card>
+      </v-flex>
 
     </v-layout>
 
@@ -98,23 +113,23 @@
                                   value="1"
                                 ></v-radio>
                                 <v-radio
-                                  label="SHAAA"
-                                  color="red darken-3"
+                                  label="Regulares Condiciones"
+                                  color="purple"
                                   value="2"
                                 ></v-radio>
                                 <v-radio
-                                  label="NO SE QUE PONER"
-                                  color="indigo"
+                                  label="Aceptables Condiciones"
+                                  color="amber"
                                   value="3"
                                 ></v-radio>
                                 <v-radio
-                                  label="EN ESTA HUEA"
-                                  color="indigo darken-3"
+                                  label="Buenas Condiciones"
+                                  color="cyan"
                                   value="4"
                                 ></v-radio>
                                 <v-radio
-                                  label="HERMANO"
-                                  color="orange"
+                                  label="Excelentes Condiciones"
+                                  color="teal"
                                   value="5"
                                 ></v-radio>
                               </v-radio-group>

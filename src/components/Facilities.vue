@@ -10,7 +10,7 @@
       <v-flex v-for="facility of facilities" :key="facility.identificador" xs12 md3>
         <v-card>
 
-          <v-card-media src="/static/doc-images/nike.jpg" height="200px">
+          <v-card-media v-bind:src="'https://www.jouer-club.cl/images/' + facility.avatar" height="200px">
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
@@ -90,7 +90,7 @@
                   </v-flex>
 
                   <v-flex xs12>
-                    <v-slider v-model="vidaUtil" prepend-icon="favorite" required value="2" thumb-label max="10" track-color="accent"></v-slider>
+                    <v-slider v-model="vida" prepend-icon="favorite" required value="2" thumb-label max="10" track-color="accent"></v-slider>
                   </v-flex>
 
                 </v-layout>
@@ -140,7 +140,7 @@ export default {
     marca:null,
     precio:null,
     fechaCompra: null,
-    vidaUtil: 2,
+    vida: null,
     facilities: [],
 
     dialog: false,
@@ -157,12 +157,9 @@ export default {
   
   methods: {
     getFacilities() {
-      HTTP.get("courts/"+this.$route.params.id+"/facilities", {
-        params: {
-        }
-      })
+      HTTP.get("courts/"+this.$route.params.id+"/facilities")
       .then(successResponse => {
-        this.courts = successResponse.data.data
+        this.facilities = successResponse.data.data
       })
       .catch(errorResponse => {
         this.errors = errorResponse.response.data.error
@@ -175,6 +172,7 @@ export default {
         marca: this.marca,
         precio: this.precio,
         fechaCompra: this.fechaCompra,
+        vida: this.vida,
         cancha: 1
       })
       .then(response => { //eliminamos
