@@ -37,7 +37,7 @@
             v-model="datepicker"
             full-width
           >
-          <v-btn :return-value.sync="datepicker" block @click="pickerDate()" color="success">Ver Partidos</v-btn>
+          <v-btn :return-value.sync="datepicker" block @click="pickerDate()" flat outline color="success">Ver Partidos</v-btn>
           </v-date-picker>
 
         </v-flex>
@@ -214,7 +214,7 @@ export default {
     },
 
     pickerDate () {
-      alert(this.datepicker),
+      this.meetings = null
       HTTP.post("courts/"+this.$route.params.id+"/meetings", {
         date: this.datepicker
       })
@@ -222,6 +222,7 @@ export default {
         // modify data
         this.meetings = successResponse.data.data
         this.count_meetings = successResponse.data.meta.pagination
+        this.errors = null
         this.datepicker = null
         // DOM is not updated yet
         this.$nextTick(function () {
