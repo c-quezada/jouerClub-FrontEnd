@@ -65,7 +65,7 @@
                   <div class="text-xs-center" v-for="(user, index) in participants" :key="index">
                     <v-chip outline class="primary" v-on:click="getUser(user.identificador)">
                       <v-avatar>
-                      <img src="https://www.jouer-club.cl/images/logos/logo.png" alt="trevor">
+                      <img v-bind:src="'https://www.jouer-club.cl/images/' + user.avatar">
                       </v-avatar>
                       <span class="primary--text">{{ user.alias }}</span>
                     </v-chip>
@@ -84,7 +84,7 @@
       <v-dialog v-model="dialog"  max-width="500">
       
         <v-card>
-          <v-card-media src="https://www.jouer-club.cl/images/logos/logo.png" height="300px">
+          <v-card-media v-bind:src="'https://www.jouer-club.cl/images/' + userInfo.avatar" height="250px">
             <v-layout column class="media">
               <v-spacer></v-spacer>
               <v-card-title class="white--text pl-5 pt-5">

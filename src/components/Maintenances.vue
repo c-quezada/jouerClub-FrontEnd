@@ -106,7 +106,7 @@
 
                             <v-flex xs12>
 
-                              <v-radio-group v-model="calificacion">
+                              <v-radio-group v-model="calificacion" :mandatory="false">
                                 <v-radio
                                   label="Malas Condiciones"
                                   color="red"
@@ -177,7 +177,7 @@ export default {
       facility: "",
       date: null,
       errors: [null],
-      calificacion: 3,
+      calificacion: 4,
       observaciones: "",
       dialog: false,
       snackbar_success: false,
@@ -267,7 +267,7 @@ export default {
     },
 
     getMaintenances(){
-      HTTP.get("facilities/"+this.$route.params.id+"/maintenance")
+      HTTP.get("facilities/"+this.$route.params.id+"/maintenance", { amount: 50})
       .then(response => {
         this.maintenances = response.data.data
         this.totalMaintenances = response.data.meta.pagination.total
