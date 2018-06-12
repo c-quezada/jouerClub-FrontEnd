@@ -57,6 +57,7 @@ export default {
         contraseña: this.password
       })
       .then(response => {
+        localStorage.setItem('auth_user', JSON.stringify(response.data.data));
         this.$store.commit('SET_LAYOUT', 'app-layout')
       })
       .catch(errorResponse => {

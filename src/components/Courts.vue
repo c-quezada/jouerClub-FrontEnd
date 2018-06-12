@@ -133,7 +133,8 @@ export default {
 
   methods: {
     getCourts() {
-      HTTP.get(`sportfields/1/courts`, {
+      var user = JSON.parse(localStorage.getItem('auth_user'))
+      HTTP.get("sportfields/"+user['identificador']+"/courts", {
         params: {
         }
       })

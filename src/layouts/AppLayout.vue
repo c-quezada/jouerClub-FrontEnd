@@ -70,21 +70,52 @@
 
       <v-spacer></v-spacer>
 
-        <div text-xs-center>
+      <div text-xs-center>
           <v-badge left color="accent" overlap>
             <span slot="badge">10&deg;</span>
             <v-icon large color="grey lighten-2">cloud</v-icon>
           </v-badge>
-       </div>
+      </div>
 
-      <v-btn icon large>
-        <v-avatar size="32px" tile>
-          <img
-            src="https://www.jouer-club.cl/images/logos/logo.png"
-            alt="JouerCLUB"
-          >
-        </v-avatar>
-      </v-btn>
+      <div class="text-xs-center">
+        <v-menu
+          :close-on-content-click="false"
+          :nudge-width="200"
+          v-model="menu"
+          offset-x
+          left="true"
+          open-on-hover
+          transition="scale-transition"
+        >
+        <v-btn slot="activator" icon large>
+          <v-avatar size="32px" tile>
+            <img
+              src="https://www.jouer-club.cl/images/logos/logo.png"
+              alt="JouerCLUB"
+            >
+          </v-avatar>
+        </v-btn>
+
+          <v-card>
+            <v-list>
+              <v-list-tile avatar>
+                <v-list-tile-avatar>
+                  <img v-bind:src="'https://www.jouer-club.cl/images/' +user_auth['avatar']">
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ user_auth['alias'] }}</v-list-tile-title>
+                  <v-list-tile-sub-title>Cluber Profile</v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-btn color="primary" block flat @click="logout">Cerrar Sesion</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+      </div>
+
     </v-toolbar>
 
     <v-content>
@@ -99,6 +130,7 @@
 <script>
   export default {
     data: () => ({
+      user_auth: JSON.parse(localStorage.getItem('auth_user')),
       dialog: false,
       drawer: null,
       items: [
@@ -109,7 +141,6 @@
           text: 'Más',
           model: true,
           children: [
-            { icon: 'settings', text: 'Configuraciones' },
             { icon: 'chat_bubble', text: 'Enviar feedback' },
             { icon: 'help', text: 'Ayuda' },
             { icon: 'phonelink', text: 'Descarga la app', href: 'https://www.jouer-club.cl/' }
@@ -119,6 +150,12 @@
     }),
     props: {
       source: String
+    },
+    methods: {
+      logout(){
+        localStorage.removeItem('auth_user')
+        this.$store.commit('SET_LAYOUT', 'login-layout')
+      }
     }
   }
 </script>
