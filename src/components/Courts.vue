@@ -35,7 +35,7 @@
           <v-spacer></v-spacer>
 
           <router-link :to="{ name: 'facilities', params: { id: court.identificador }}">
-            <v-tooltip v-model="show" bottom>
+            <v-tooltip bottom>
               <v-btn slot="activator" icon>
                 <v-icon color="primary">extension</v-icon>
               </v-btn>
@@ -44,7 +44,7 @@
           </router-link>
 
           <router-link :to="{ name: 'meetings', params: { id: court.identificador }}">
-            <v-tooltip v-model="show" bottom>
+            <v-tooltip bottom>
               <v-btn slot="activator" icon>
                 <v-icon color="accent">assessment</v-icon>
               </v-btn>
@@ -129,6 +129,13 @@ export default {
 
   mounted() {
     this.getCourts()
+  },
+
+  beforeCreate() {
+    if (!'auth_user' in localStorage) {
+      this.$store.commit('SET_LAYOUT', 'login-layout')
+      this.$router.push('/')
+    }
   },
 
   methods: {

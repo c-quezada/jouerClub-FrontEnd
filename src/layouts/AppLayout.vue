@@ -72,7 +72,7 @@
 
       <div text-xs-center>
           <v-badge left color="accent" overlap>
-            <span slot="badge">10&deg;</span>
+            <span slot="badge">{{ getWeather(weather/100) }}&deg;</span>
             <v-icon large color="grey lighten-2">cloud</v-icon>
           </v-badge>
       </div>
@@ -81,9 +81,8 @@
         <v-menu
           :close-on-content-click="false"
           :nudge-width="200"
-          v-model="menu"
           offset-x
-          left="true"
+          left
           open-on-hover
           transition="scale-transition"
         >
@@ -128,8 +127,11 @@
 </template>
 
 <script>
+import axios from 'axios';
   export default {
     data: () => ({
+      weather: [],
+      errors: [],
       user_auth: JSON.parse(localStorage.getItem('auth_user')),
       dialog: false,
       drawer: null,
@@ -151,10 +153,34 @@
     props: {
       source: String
     },
+
+    created(){
+      this.getTemperature()
+    },
+
     methods: {
       logout(){
         localStorage.removeItem('auth_user')
         this.$store.commit('SET_LAYOUT', 'login-layout')
+      },
+
+      getWeather(val){
+        return val.toFixed()
+      },
+
+      getTemperature(){
+        axios.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search`, {
+          params: {
+            q: '-33.405348,-70.682655',
+            apikey: "uQYPezmxO2wdd02z2GpSpRrhGs5MFICD",
+          }
+        })
+        .then(response => {
+          this.weather = response.data.GeoPosition.Elevation.Imperial.Value
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
       }
     }
   }

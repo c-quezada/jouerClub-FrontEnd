@@ -154,6 +154,13 @@ export default {
   created() {
     this.getFacilities()
   },
+
+  beforeCreate() {
+    if (!'auth_user' in localStorage) {
+      this.$store.commit('SET_LAYOUT', 'login-layout')
+      this.$router.push('/')
+    }
+  },
   
   methods: {
     getFacilities() {

@@ -50,15 +50,31 @@ export default {
       notification: null
     }
   },
+  created() {
+    this.check()
+  },
+
   methods: {
+    check(){
+      if('auth_user' in localStorage){
+        this.$store.commit('SET_LAYOUT', 'app-layout') 
+      }
+    },
+
     login(){
       HTTP.post('login', {
         correo: this.email,
         contraseña: this.password
       })
       .then(response => {
-        localStorage.setItem('auth_user', JSON.stringify(response.data.data));
-        this.$store.commit('SET_LAYOUT', 'app-layout')
+        if (response.data.data.tipo == 'cluber') {
+          localStorage.setItem('auth_user', JSON.stringify(response.data.data));
+          this.$store.commit('SET_LAYOUT', 'app-layout') 
+        } else {
+          this.snackbar_errors = true,
+          this.notification = "No estas capacitado para ingresar a esta plataforma, Gracias.",
+          this.dialog = true
+        }       
       })
       .catch(errorResponse => {
         this.snackbar_errors = true,

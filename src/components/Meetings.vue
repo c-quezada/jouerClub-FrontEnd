@@ -168,6 +168,13 @@ export default {
     this.getMeetings()
   },
 
+  beforeCreate() {
+    if (!'auth_user' in localStorage) {
+      this.$store.commit('SET_LAYOUT', 'login-layout')
+      this.$router.push('/')
+    }
+  },
+
   methods: {
     getCourt() {
       HTTP.get(`courts/`+this.$route.params.id, {
