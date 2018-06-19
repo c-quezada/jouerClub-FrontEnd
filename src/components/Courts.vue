@@ -95,15 +95,19 @@
     </v-layout> <!-- Courts End Card -->
 
     <!-- SNACKBAR SUCCESSFUL -->
-    <v-snackbar v-model="snackbar_success">
+    <v-snackbar v-model="snackbar_success" multi-line>
       {{ notification }}
       <v-btn dark flat @click.native="snackbar_success = false" color="success">Ok</v-btn>
     </v-snackbar>
     <!-- SNACKBAR -->
 
     <!-- SNACKBAR ERRORS -->
-    <v-snackbar v-model="snackbar_errors" :top="true" :right="true">
-      {{ notification }}
+    <v-snackbar v-model="snackbar_errors" multi-line>
+      <ul>
+        <li v-for="error of errors" :key="error">
+          {{ error[0] }}
+        </li>
+      </ul>
       <v-btn dark flat @click.native="snackbar_errors = false" color="error">Cerrar</v-btn>
     </v-snackbar>
     <!-- SNACKBAR -->
@@ -166,7 +170,7 @@ export default {
       })
       .catch(errorResponse => {
         this.snackbar_errors = true,
-        this.notification = errorResponse.response.data.error.nombre[0],
+        this.errors = errorResponse.response.data.error,
         this.dialog = true
       })
     },
@@ -183,7 +187,7 @@ export default {
         })
         .catch(errorResponse => {
           this.snackbar_errors = true,
-          this.notification = errorResponse.response.data.error.nombre[0],
+          this.errors = errorResponse.response.data.error,
           this.dialog = true
         })
 
@@ -198,7 +202,7 @@ export default {
         })
         .catch(errorResponse => {
           this.snackbar_errors = true,
-          this.notification = errorResponse.response.data.error.nombre[0],
+          this.errors = errorResponse.response.data.error,
           this.dialog = true
         })
 

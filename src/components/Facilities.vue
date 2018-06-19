@@ -7,7 +7,7 @@
     
     <v-layout row wrap>
 
-      <v-flex v-for="facility of facilities" :key="facility.identificador" xs12 md3>
+      <v-flex d-flex v-for="facility of facilities" :key="facility.identificador" xs12 md3>
         <v-card>
 
           <v-card-media v-bind:src="'https://www.jouer-club.cl/images/' + facility.avatar" height="200px">
@@ -66,31 +66,32 @@
                   </v-flex>
 
                   <v-flex xs12>
-                    <v-menu
+                    <v-dialog
                       ref="picker"
                       :close-on-content-click="false"
                       v-model="picker"
-                      :nudge-right="40"
                       :return-value.sync="fechaCompra"
+                      persistent
                       lazy
-                      transition="scale-transition"
-                      offset-y
                       full-width
-                      min-width="290px"
-                      >
+                      width="290px" 
+                    >
                       <v-text-field
                         slot="activator"
                         v-model="fechaCompra"
                         label="Fecha de Compra"
                         prepend-icon="event"
-                        readonly
                       ></v-text-field>
-                      <v-date-picker v-model="fechaCompra" @input="$refs.picker.save(fechaCompra)"></v-date-picker>
-                    </v-menu>
+                      <v-date-picker v-model="fechaCompra" @input="$refs.picker.save(fechaCompra)">
+                        <v-spacer></v-spacer>
+                        <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
+                        <v-btn flat color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                      </v-date-picker>
+                    </v-dialog>
                   </v-flex>
 
                   <v-flex xs12>
-                    <v-slider v-model="vida" prepend-icon="favorite" required value="2" thumb-label max="10" track-color="accent"></v-slider>
+                    <v-slider v-model="vida" hint="Años de vida, segun fabricante" prepend-icon="favorite" required value="2" thumb-label max="10" track-color="amber"></v-slider>
                   </v-flex>
 
                 </v-layout>
@@ -111,14 +112,14 @@
     </v-layout> <!-- Courts End Card -->
 
     <!-- SNACKBAR SUCCESSFUL -->
-    <v-snackbar v-model="snackbar_success">
+    <v-snackbar v-model="snackbar_success" multi-line>
       {{ notification }}
       <v-btn dark flat @click.native="snackbar_success = false" color="success">Ok</v-btn>
     </v-snackbar>
     <!-- SNACKBAR -->
 
     <!-- SNACKBAR ERRORS -->
-    <v-snackbar v-model="snackbar_errors" :top="true" :multi-line="true" :right="true">
+    <v-snackbar v-model="snackbar_errors" multi-line>
       <ul>
         <li v-for="error of errors" :key="error">
           {{ error[0] }}
@@ -127,7 +128,6 @@
       <v-btn dark flat @click.native="snackbar_errors = false" color="error">Cerrar</v-btn>
     </v-snackbar>
     <!-- SNACKBAR -->
-
 
   </v-container>
 </template>
@@ -182,14 +182,14 @@ export default {
         vida: this.vida,
         cancha: 1
       })
-      .then(response => { //eliminamos
+      .then(successResponse => { //eliminamos
         this.getFacilities(); //listamos
         this.snackbar_success = true,
-        this.notification = 'Recurso agregado Correctamente'
+        this.notification = 'Recurso agregado Correctamente',
+        alert(this.fechaCompra)
       })
       .catch(errorResponse => {
         this.snackbar_errors = true,
-        alert(this.fechaCompra),
         this.errors = errorResponse.response.data.error,
         this.dialog = true
       })

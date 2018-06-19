@@ -1,9 +1,10 @@
 <template>
   <v-container fluid>
-    <v-layout row>
+   
+    <v-layout row wrap>
       
       <!-- Court and Calendar -->
-      <v-flex xs12 lg5>
+      <v-flex xs12 lg4>
         
         <!-- Court Card -->
         <v-flex xs12>
@@ -46,7 +47,7 @@
 
 
       <!-- Meetings -->
-      <v-flex xs12 l7>
+      <v-flex>
         <v-subheader class="primary--text">Encuentros Registrados</v-subheader>
 
         <v-alert v-if="errors && errors.length" :value="true" outline color="error" icon="warning">
@@ -62,8 +63,8 @@
             <v-card>
                 <v-card-text class="grey lighten-4">
 
-                  <div class="text-xs-center" v-for="(user, index) in participants" :key="index">
-                    <v-chip outline class="primary" v-on:click="getUser(user.identificador)">
+                  <div class="text-xs-center">
+                    <v-chip v-for="(user, index) in participants" :key="index" outline class="primary" v-on:click="getUser(user.identificador)">
                       <v-avatar>
                       <img v-bind:src="'https://www.jouer-club.cl/images/' + user.avatar">
                       </v-avatar>
@@ -80,7 +81,7 @@
       </v-flex>
     </v-layout>
 
-    <v-layout row justify-center>
+    <v-layout row justify-center wrap>
       <v-dialog v-model="dialog"  max-width="500">
       
         <v-card>

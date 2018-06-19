@@ -58,7 +58,7 @@
     </v-navigation-drawer>
     <v-toolbar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
-      color="transparent"
+      color="white"
       dark
       app
       fixed
@@ -171,7 +171,7 @@ import axios from 'axios';
       getTemperature(){
         axios.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search`, {
           params: {
-            q: '-33.405348,-70.682655',
+            q: '-33.405218,-70.6837653',
             apikey: "uQYPezmxO2wdd02z2GpSpRrhGs5MFICD",
           }
         })

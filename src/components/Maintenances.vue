@@ -1,21 +1,21 @@
 <template>
   <v-container fluid>    
   
-    <v-layout row>
-      <v-flex xs12 md8>
+    <v-layout row wrap>
+      <v-flex xs12 md6>
         <v-card dark tile flat color="transparent">
           <v-card-text>
 
             <v-flex xs12>
-              <v-alert :value="true" outline color="indigo" icon="label_important">
-                <span class="indigo--text">Nombre: </span> 
+              <v-alert :value="true" outline color="primary" icon="label_important">
+                <span class="primary--text">Nombre: </span> 
                 <span class="text-xs-right">{{ facility.nombre }}</span>
               </v-alert>
             </v-flex>
 
             <v-flex xs12>
-              <v-alert :value="true" outline color="accent" icon="loyalty">
-                <span class="accent--text">Marca: </span> 
+              <v-alert :value="true" outline color="primary" icon="loyalty">
+                <span class="primary--text">Marca: </span> 
                 <span class="text-xs-right">{{ facility.marca }}</span>
               </v-alert>
             </v-flex>
@@ -28,8 +28,8 @@
             </v-flex>
 
             <v-flex xs12>
-              <v-alert :value="true" outline color="deep-purple" icon="shopping_cart">
-                <span class="deep-purple--text">Fecha Compra: </span> 
+              <v-alert :value="true" outline color="primary" icon="shopping_cart">
+                <span class="primary--text">Fecha Compra: </span> 
                 <span class="text-xs-right">{{ facility.fechaCompra }}</span>
               </v-alert>
             </v-flex>
@@ -38,9 +38,9 @@
         </v-card>
       </v-flex>
 
-      <v-flex xs12 md4>
-        <v-card dark tile flat color="red darken-4">
-          <v-card-text>#2</v-card-text>
+      <v-flex xs12 md6>
+        <v-card dark tile flat color="primary">
+          <v-card-text>GRAFICO ... PROXIMAMENTE</v-card-text>
         </v-card>
       </v-flex>
 
@@ -150,19 +150,23 @@
             </v-dialog>
         <!-- END MODAL -->
 
-      <!-- SNACKBAR SUCCESSFUL -->
-      <v-snackbar v-model="snackbar_success" :multi-line="true" :color="primary">
-        {{ text }}
-        <v-btn dark flat @click.native="snackbar_success = false" color="success">Ok</v-btn>
-      </v-snackbar>
-      <!-- SNACKBAR -->
+    <!-- SNACKBAR SUCCESSFUL -->
+    <v-snackbar v-model="snackbar_success" multi-line>
+      {{ notification }}
+      <v-btn dark flat @click.native="snackbar_success = false" color="success">Ok</v-btn>
+    </v-snackbar>
+    <!-- SNACKBAR -->
 
-      <!-- SNACKBAR ERRORS -->
-      <v-snackbar v-model="snackbar_errors" :multi-line="true" :color='error'>
-        {{ text }}
-        <v-btn dark flat @click.native="snackbar_errors = false" color="error">Cerrar</v-btn>
-      </v-snackbar>
-      <!-- SNACKBAR -->
+    <!-- SNACKBAR ERRORS -->
+    <v-snackbar v-model="snackbar_errors" multi-line>
+      <ul>
+        <li v-for="error of errors" :key="error">
+          {{ error[0] }}
+        </li>
+      </ul>
+      <v-btn dark flat @click.native="snackbar_errors = false" color="error">Cerrar</v-btn>
+    </v-snackbar>
+    <!-- SNACKBAR -->
 
     </v-layout>
   </v-container>
@@ -176,7 +180,8 @@ export default {
       //  App 
       facility: "",
       date: null,
-      errors: [null],
+      errors: null,
+      notification: null,
       calificacion: 4,
       observaciones: "",
       dialog: false,
@@ -275,13 +280,14 @@ export default {
 
     getMaintenances(){
       HTTP.get("facilities/"+this.$route.params.id+"/maintenance", { amount: 50})
-      .then(response => {
-        this.maintenances = response.data.data
-        this.totalMaintenances = response.data.meta.pagination.total
-        console.log(response.data.meta.pagination);
+      .then(successResponse => {
+        this.maintenances = successResponse.data.data
+        this.totalMaintenances = successResponse.data.meta.pagination.total
       })
-      .catch(e => {
-        this.errors.push(e)
+      .catch(errorResponse => {
+        this.snackbar_errors = true,
+        this.errors = errorResponse.response.data.error,
+        this.dialog = true
       })
     },
 
@@ -291,27 +297,28 @@ export default {
         calificacion: this.calificacion,
         instalacion: this.$route.params.id
       })
-      .then(response => {
+      .then(successResponse => {
         this.getMaintenances();
         this.observaciones = null,
         this.snackbar_success = true,
-        this.text = 'Mantencion agregada correctamente'
+        this.notification = 'Mantencion agregada correctamente'
       })
-      .catch(errors => {
+      .catch(errorResponse => {
         this.snackbar_errors = true,
-        this.text = errors.response.data.error.observaciones[0],
+        this.errors = errorResponse.response.data.error,
         this.dialog = true
       })
     },
 
     getFacility(){
       HTTP.get("facilities/"+this.$route.params.id)
-      .then(response => {
-        this.facility = response.data.data
-        console.log(response.data.data);
+      .then(successResponse => {
+        this.facility = successResponse.data.data
       })
-      .catch(e => {
-        this.errors.push(e)
+      .catch(errorResponse => {
+        this.snackbar_errors = true,
+        this.errors = errorResponse.response.data.error,
+        this.dialog = true
       })
     },
 
