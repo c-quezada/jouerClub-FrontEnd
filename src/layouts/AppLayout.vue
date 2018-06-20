@@ -71,10 +71,10 @@
       <v-spacer></v-spacer>
 
       <div text-xs-center>
-          <v-badge left color="accent" overlap>
-            <span slot="badge">{{ getWeather(weather/100) }}&deg;</span>
-            <v-icon large color="grey lighten-2">cloud</v-icon>
-          </v-badge>
+        <v-badge left color="amber" overlap>
+          <span slot="badge" class="white--text">{{ getWeather(weather/100) }}&deg;</span>
+          <v-icon color="info">cloud</v-icon>
+        </v-badge>
       </div>
 
       <div class="text-xs-center">
