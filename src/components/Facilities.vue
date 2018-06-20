@@ -180,13 +180,12 @@ export default {
         precio: this.precio,
         fechaCompra: this.fechaCompra,
         vida: this.vida,
-        cancha: 1
+        cancha: this.$route.params.id
       })
       .then(successResponse => { //eliminamos
         this.getFacilities(); //listamos
         this.snackbar_success = true,
-        this.notification = 'Recurso agregado Correctamente',
-        alert(this.fechaCompra)
+        this.notification = 'Recurso agregado Correctamente'
       })
       .catch(errorResponse => {
         this.snackbar_errors = true,
