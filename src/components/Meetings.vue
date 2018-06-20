@@ -1,53 +1,17 @@
 <template>
   <v-container fluid>
-   
+
     <v-layout row wrap>
-      
-      <!-- Court and Calendar -->
-      <v-flex xs12 lg4>
-        
-        <!-- Court Card -->
-        <v-flex xs12>
-          <v-card>
-            <v-card-media
-              v-bind:src="'https://www.jouer-club.cl/images/' + court.avatar"
-              height="200px"
-              >
-            </v-card-media>
-
-            <v-card-title primary-title>
-              <div>
-                <div class="headline">CANCHA: {{ court.nombre }}</div>
-                <span class="grey--text">PARTIDOS JUGADOS: {{ count_meetings.total }}</span>
-              </div>
-            </v-card-title>
-            
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <router-link :to="{ name: 'facilities', params: { id: this.$route.params.id }}">
-              <v-btn flat color="primary">Ver Recursos</v-btn>
-              </router-link>
-            </v-card-actions>
-
-          </v-card>
-        </v-flex>
-
-        <!-- Picker -->
-        <v-flex xs12>
+      <v-flex xs12 md4 order-md1>
           <v-date-picker
             v-model="datepicker"
             full-width
           >
           <v-btn :return-value.sync="datepicker" block @click="pickerDate()" flat outline color="success">Ver Partidos</v-btn>
           </v-date-picker>
-
-        </v-flex>
-
       </v-flex>
 
-
-      <!-- Meetings -->
-      <v-flex>
+      <v-flex xs12 md8 order-md2>
         <v-subheader class="primary--text">Encuentros Registrados</v-subheader>
 
         <v-alert v-if="errors && errors.length" :value="true" outline color="error" icon="warning">
@@ -77,9 +41,39 @@
             </v-card>
           </v-expansion-panel-content>
         </v-expansion-panel>
-
       </v-flex>
+  </v-layout>
+
+    <v-layout row>
+      <v-flex xs12 md4 order-md1 order-xs2>
+          <v-card>
+            <v-card-media
+              v-bind:src="'https://www.jouer-club.cl/images/' + court.avatar"
+              height="200px"
+              >
+            </v-card-media>
+
+            <v-card-title primary-title>
+              <div>
+                <div class="headline">CANCHA: {{ court.nombre }}</div>
+                <span class="grey--text">PARTIDOS JUGADOS: {{ count_meetings.total }}</span>
+              </div>
+            </v-card-title>
+            
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <router-link :to="{ name: 'facilities', params: { id: this.$route.params.id }}">
+              <v-btn flat color="primary">Ver Recursos</v-btn>
+              </router-link>
+            </v-card-actions>
+
+          </v-card>
+      </v-flex>
+
     </v-layout>
+
+
+<!-- END -->
 
     <v-layout row justify-center wrap>
       <v-dialog v-model="dialog"  max-width="500">
