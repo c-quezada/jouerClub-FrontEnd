@@ -285,9 +285,7 @@ export default {
         this.totalMaintenances = successResponse.data.meta.pagination.total
       })
       .catch(errorResponse => {
-        this.snackbar_errors = true,
-        this.errors = errorResponse.response.data.error,
-        this.dialog = true
+        this.errors = errorResponse.response.data.error
       })
     },
 

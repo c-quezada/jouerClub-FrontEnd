@@ -136,7 +136,9 @@ import axios from 'axios';
       dialog: false,
       drawer: null,
       items: [
+        { icon: 'dashboard', text: 'Centro Deportivo', href: '#' },
         { icon: 'view_module', text: 'Canchas', href: '#' },
+        { icon: 'extension', text: 'Servicios', href: '#' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',

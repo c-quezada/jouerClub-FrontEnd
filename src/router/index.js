@@ -5,6 +5,7 @@ import Courts from '@/components/Courts'
 import Meetings from '@/components/Meetings'
 import Facilities from '@/components/Facilities'
 import Maintenances from '@/components/Maintenances'
+import Sportfield  from '@/components/Sportfield'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/facilities/:id/maintenances',
       name: 'maintenances',
       component: Maintenances
+    },
+    {
+      path: '/my-sportfield',
+      name: 'my-sportfield',
+      component: Sportfield
     }
   ]
 })
