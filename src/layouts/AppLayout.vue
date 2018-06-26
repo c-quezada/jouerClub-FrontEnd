@@ -13,7 +13,7 @@
             :key="item.heading"
             row
             align-center
-          >
+          > 
           </v-layout>
           <v-list-group
             v-else-if="item.children"
@@ -32,6 +32,7 @@
             <v-list-tile
               v-for="(child, i) in item.children"
               :key="i"
+              :href="child.to"
             >
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
@@ -43,7 +44,7 @@
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
-          <v-list-tile v-else :key="item.text">
+          <v-list-tile v-else :key="item.text" :to="item.to">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
@@ -136,9 +137,9 @@ import axios from 'axios';
       dialog: false,
       drawer: null,
       items: [
-        { icon: 'dashboard', text: 'Centro Deportivo', href: '#' },
-        { icon: 'view_module', text: 'Canchas', href: '#' },
-        { icon: 'extension', text: 'Servicios', href: '#' },
+        { icon: 'dashboard', text: 'Centro Deportivo', to: 'my-sportfield' },
+        { icon: 'view_module', text: 'Canchas', to: '/' },
+        { icon: 'extension', text: 'Servicios', to: '/sporfields/1/services' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',
@@ -147,7 +148,7 @@ import axios from 'axios';
           children: [
             { icon: 'chat_bubble', text: 'Enviar feedback' },
             { icon: 'help', text: 'Ayuda' },
-            { icon: 'phonelink', text: 'Descarga la app', href: 'https://www.jouer-club.cl/' }
+            { icon: 'phonelink', text: 'Descarga la app', to: 'https://www.jouer-club.cl/' }
           ]
         }
       ]

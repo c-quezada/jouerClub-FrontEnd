@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Courts from '@/components/Courts'
+import Services from '@/components/Services'
 import Meetings from '@/components/Meetings'
 import Facilities from '@/components/Facilities'
 import Maintenances from '@/components/Maintenances'
@@ -15,6 +16,11 @@ export default new Router({
       path: '/',
       name: 'courts',
       component: Courts
+    },
+    {
+      path: '/sporfields/:id/services',
+      name: 'services',
+      component: Services
     },
     {
       path: '/courts/:id/facilities',
