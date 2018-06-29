@@ -28,11 +28,11 @@
                 <v-card-text class="grey lighten-4">
 
                   <div class="text-xs-center">
-                    <v-chip v-for="(user, index) in participants" :key="index" outline class="primary" v-on:click="getUser(user.identificador)">
+                    <v-chip color="white" text-color="primary" v-for="(user, index) in participants" :key="index" v-on:click="getUser(user.identificador)">
                       <v-avatar>
-                      <img v-bind:src="'https://www.jouer-club.cl/images/' + user.avatar">
+                        <img v-bind:src="'https://www.jouer-club.cl/images/' + user.avatar">
                       </v-avatar>
-                      <span class="primary--text">{{ user.alias }}</span>
+                      {{ user.alias }}
                     </v-chip>
                   </div>
 
