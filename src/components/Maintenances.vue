@@ -1,50 +1,40 @@
 <template>
   <v-container fluid>    
   
-    <v-layout row wrap>
-      <v-flex xs12 md6>
-        <v-card dark tile flat color="transparent">
-          <v-card-text>
+    <v-card flat>
+      <v-card-text>
+        <v-layout wrap>
+          <v-flex xs12 md6>
+            <v-alert :value="true" outline color="primary" icon="label_important">
+              <span class="primary--text">Nombre: </span> 
+              <span class="text-xs-right">{{ facility.nombre }}</span>
+            </v-alert>
+          </v-flex>
 
-            <v-flex xs12>
-              <v-alert :value="true" outline color="primary" icon="label_important">
-                <span class="primary--text">Nombre: </span> 
-                <span class="text-xs-right">{{ facility.nombre }}</span>
-              </v-alert>
-            </v-flex>
+          <v-flex xs12 md6>
+            <v-alert :value="true" outline color="primary" icon="loyalty">
+              <span class="primary--text">Marca: </span> 
+              <span class="text-xs-right">{{ facility.marca }}</span>
+            </v-alert>
+          </v-flex>
 
-            <v-flex xs12>
-              <v-alert :value="true" outline color="primary" icon="loyalty">
-                <span class="primary--text">Marca: </span> 
-                <span class="text-xs-right">{{ facility.marca }}</span>
-              </v-alert>
-            </v-flex>
+          <v-flex xs12 md6>
+            <v-alert :value="true" outline color="primary" icon="attach_money">
+              <span class="primary--text">Precio: </span> 
+              <span class="text-xs-right">{{ facility.precio }}</span>
+            </v-alert>
+          </v-flex>
 
-            <v-flex xs12>
-              <v-alert :value="true" outline color="primary" icon="attach_money">
-                <span class="primary--text">Precio: </span> 
-                <span class="text-xs-right">{{ facility.precio }}</span>
-              </v-alert>
-            </v-flex>
-
-            <v-flex xs12>
-              <v-alert :value="true" outline color="primary" icon="shopping_cart">
-                <span class="primary--text">Fecha Compra: </span> 
-                <span class="text-xs-right">{{ facility.fechaCompra }}</span>
-              </v-alert>
-            </v-flex>
-
-          </v-card-text>
-        </v-card>
-      </v-flex>
-
-      <v-flex xs12 md6>
-        <v-card dark tile flat color="primary">
-          <v-card-text>GRAFICO ... PROXIMAMENTE</v-card-text>
-        </v-card>
-      </v-flex>
-
-    </v-layout>
+          <v-flex xs12 md6>
+            <v-alert :value="true" outline color="primary" icon="shopping_cart">
+              <span class="primary--text">Fecha Compra: </span> 
+              <span class="text-xs-right">{{ facility.fechaCompra }}</span>
+            </v-alert>
+          </v-flex>
+          </v-layout> 
+      </v-card-text>
+    </v-card>
+      
 
     <v-layout row wrap>
       <v-flex xs12>
@@ -60,8 +50,12 @@
         <template slot="items" slot-scope="props">
           <td>{{ props.item.identificador }}</td>
           <td class="text-xs-left">{{ props.item.observaciones }}</td>
-          <td class="text-xs-center">{{ props.item.calificacion }}</td>
-          <td class="text-xs-center">{{ props.item.fechaCreacion }}</td>
+          <td class="text-xs-left">
+            <v-icon v-for="star in props.item.calificacion" :key="star" class="primary--text">
+              start
+            </v-icon>
+          </td>
+          <td class="text-xs-left">{{ props.item.fechaCreacion }}</td>
         </template>
       </v-data-table>
 
@@ -318,16 +312,6 @@ export default {
         this.errors = errorResponse.response.data.error,
         this.dialog = true
       })
-    },
-
-    viewStatus(value){
-      if (value == 'now') {
-        return this.status[0]
-      } if (value == 'pending') {
-        return this.status[1]
-      } else {
-        return this.status[2]
-      }
     }
   }
 }

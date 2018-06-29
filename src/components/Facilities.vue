@@ -148,7 +148,7 @@ export default {
     snackbar_success: false,
     snackbar_errors: false,     
     notification: null,
-    errors: null  
+    errors: []  
   }),
 
   created() {
@@ -185,6 +185,7 @@ export default {
       .then(successResponse => { //eliminamos
         this.getFacilities(); //listamos
         this.snackbar_success = true,
+        this.errors = null,
         this.notification = 'Recurso agregado Correctamente'
       })
       .catch(errorResponse => {
