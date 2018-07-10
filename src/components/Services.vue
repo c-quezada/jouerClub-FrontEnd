@@ -11,24 +11,21 @@
         <v-card>
 
           <v-card-media v-bind:src="'https://www.jouer-club.cl/images/' + service.avatar" height="200px">
-            <v-container fill-height fluid>
-              <v-layout fill-height>
-                <v-flex xs12 align-end flexbox>
-                  <span class="headline white--text" v-text="service.nombre"></span><br>
-                </v-flex>
-              </v-layout>
-            </v-container>
           </v-card-media>
 
           <v-card-actions>
 
-          <v-spacer></v-spacer>
+            <v-icon slot="activator" dark color="black">keyboard_arrow_right</v-icon>  {{ service.nombre }}
 
-          <v-tooltip bottom>
-            <v-btn  slot="activator" outline color="info" @click="removeService(service.identificador)">Desvincular</v-btn>
-            <span>Desvincular Servicio</span>
-          </v-tooltip>
+            <v-spacer></v-spacer>
 
+            <v-tooltip bottom>
+              <v-btn slot="activator" icon @click="removeService(service.identificador)">
+                <v-icon color="error">delete</v-icon>
+              </v-btn>
+                <span>Remover servicio</span>
+            </v-tooltip>
+          
           </v-card-actions>
 
         </v-card>
@@ -60,9 +57,22 @@
                       <v-card>
                         <v-card-media v-bind:src="'https://www.jouer-club.cl/images/' + generalService.avatar" height="200px">
                         </v-card-media>
+
                         <v-card-actions>
-                          <v-btn flat block color="success" @click="addService(generalService.identificador)" >Vincular servicio - {{ generalService.nombre}}</v-btn>
+
+                          <v-icon slot="activator" dark color="black">keyboard_arrow_right</v-icon>  {{ generalService.nombre }}
+
+                          <v-spacer></v-spacer>
+
+                          <v-tooltip bottom>
+                            <v-btn slot="activator" icon @click="addService(generalService.identificador)">
+                              <v-icon color="info">add</v-icon>
+                            </v-btn>
+                              <span>Vincular servicio</span>
+                          </v-tooltip>
+                        
                         </v-card-actions>
+
                       </v-card>
                     </v-flex>
                   </v-layout>
@@ -148,7 +158,7 @@ export default {
     addService(service_id) {
       HTTP.post("sportfields/"+this.$route.params.id+"/addService/"+service_id)
       .then(successResponse => {
-          this.getServices();
+          this.getServices(),
           this.dialog = false,
           this.snackbar_success = true,
           this.notification = 'Servicio vinculado correctamente'
@@ -163,9 +173,9 @@ export default {
     removeService(service_id) {
       HTTP.post("sportfields/"+this.$route.params.id+"/removeService/"+service_id)
       .then(successResponse => {
-          this.getServices();
           this.dialog = false,
           this.snackbar_success = true,
+          this.getServices();
           this.notification = 'Servicio desvinculado correctamente'
       })
       .catch(errorResponse => {
@@ -174,6 +184,6 @@ export default {
         this.dialog = true
       })
     }    
-  } //v-for="generalService of allServices" :key="generalService.identificador"
+  }
 }
 </script>

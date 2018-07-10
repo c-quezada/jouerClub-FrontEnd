@@ -7,7 +7,7 @@
 
     <v-layout row wrap>
 
-      <v-flex v-for="court of courts" :key="court.identificador" xs12 md3>
+      <v-flex v-for="court of courts" :key="court.identificador" xs12 md4>
         <v-card>
 
           <v-card-media v-bind:src="'https://www.jouer-club.cl/images/' + court.avatar" height="200px">
