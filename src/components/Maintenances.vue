@@ -197,8 +197,8 @@ export default {
         value: 'identificador'
       },
         { text: 'Observaciones', value: 'observaciones' },
-        { text: 'Calificacion', value: 'calificacion' },
-        { text: 'Fecha Mantencion', value: 'fechaCreacion' }
+        { text: 'Calificación', value: 'calificacion' },
+        { text: 'Fecha de mantención', value: 'fechaCreacion' }
       ]
     }
   },

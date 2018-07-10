@@ -110,7 +110,7 @@
             </v-list>
             <v-divider></v-divider>
             <v-card-actions>
-              <v-btn color="primary" block flat @click="logout">Cerrar Sesion</v-btn>
+              <v-btn color="primary" block flat @click="logout">Cerrar Sesión</v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
