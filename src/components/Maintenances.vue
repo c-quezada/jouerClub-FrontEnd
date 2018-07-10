@@ -176,7 +176,7 @@ export default {
       date: null,
       errors: null,
       notification: null,
-      calificacion: 4,
+      calificacion: 3,
       observaciones: "",
       dialog: false,
       snackbar_success: false,
