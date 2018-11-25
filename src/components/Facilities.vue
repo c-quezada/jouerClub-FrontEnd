@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
 
+    <span class="headline font-weight-thin primary--text">Recursos disponibles {{ court.nombre }}</span>
+    <br><br>
+
     <v-alert v-if="errors && errors.length" :value="true" outline color="error" icon="warning">
     {{ errors }}
     </v-alert>
@@ -14,14 +17,15 @@
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                  <span class="headline white--text" v-text="facility.nombre"></span><br>
+                  <span class="white--text">Nombre: </span>
+                  <br><span class="headline white--text" v-text="facility.nombre"></span><br>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-media>
 
           <v-card-actions>
-            <v-icon slot="activator" dark color="black">keyboard_arrow_right</v-icon>  {{ facility.marca }}
+            <v-icon slot="activator" dark color="black">keyboard_arrow_right</v-icon>Marca:  {{ facility.marca }}
             
             <v-spacer></v-spacer>
 
@@ -54,15 +58,42 @@
                 <v-layout wrap>
 
                   <v-flex xs12>
-                    <v-text-field v-model="nombre" label="Nombre" prepend-icon="label" required></v-text-field>
+                    <v-text-field v-model="nombre" label="Nombre" prepend-icon="label" required :counter="20"
+                    :rules= "[
+                                  val => (val || '').length > 0 || 'Este campo es requerido',
+                                  val => val.length >= 3 || 'Minimo 3 caracteres',
+                                  val => val.length <= 20 || 'Maximo 20 caracteres'
+                                ]"
+                    ></v-text-field>
                   </v-flex>
 
                   <v-flex xs12>
-                    <v-text-field v-model="marca" label="Marca" prepend-icon="shopping_cart" required></v-text-field>
+                    <v-text-field v-model="marca" label="Marca" prepend-icon="shopping_cart" required :counter="20"
+                    :rules= "[
+                                  val => (val || '').length > 0 || 'Este campo es requerido',
+                                  val => val.length >= 3 || 'Minimo 3 caracteres',
+                                  val => val.length <= 20 || 'Maximo 20 caracteres'
+                                ]"
+                    ></v-text-field>
                   </v-flex>
 
                   <v-flex xs12>
-                    <v-text-field v-model="precio" label="Precio" prepend-icon="attach_money" required></v-text-field>
+                      <v-text-field
+                        v-model="precio"
+                        abel="Precio"
+                        color="teal"
+                        prepend-icon="attach_money"
+                        required
+                        type="number"
+                        :counter="10"
+                        min="3"
+                        :rules= "[
+                                  val => (val || '').length > 0 || 'Este campo es requerido',
+                                  val => val.length >= 3 || 'Minimo 3 caracteres',
+                                  val => val.length <= 10 || 'Maximo 10 caracteres'
+                                ]"
+                        >
+                      </v-text-field>                    
                   </v-flex>
 
                   <v-flex xs12>
@@ -90,7 +121,9 @@
                     </v-dialog>
                   </v-flex>
 
+                  <br><br>
                   <v-flex xs12>
+                    <span class="grey--text">Años de vida, según fabricante</span>
                     <v-slider v-model="vida" hint="Años de vida, segun fabricante" prepend-icon="favorite" required value="2" thumb-label max="10" track-color="amber"></v-slider>
                   </v-flex>
 
@@ -142,6 +175,7 @@ export default {
     fechaCompra: null,
     vida: null,
     facilities: [],
+    court: [],
 
     dialog: false,
     picker: false,
@@ -152,6 +186,7 @@ export default {
   }),
 
   created() {
+    this.getCourtName()
     this.getFacilities()
   },
 
@@ -163,6 +198,16 @@ export default {
   },
   
   methods: {
+    getCourtName() {
+      HTTP.get("courts/"+this.$route.params.id)
+      .then(successResponse => {
+        this.court = successResponse.data.data
+        console.log(successResponse.data.data)
+      })
+      .catch(errorResponse => {
+        this.errors = errorResponse.response.data.error
+      })
+    },
     getFacilities() {
       HTTP.get("courts/"+this.$route.params.id+"/facilities")
       .then(successResponse => {

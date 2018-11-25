@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
 
+    <span class="headline font-weight-thin primary--text">Canchas Registradas</span>
+    <br><br>
+
     <v-alert v-if="errors && errors.length" :value="true" outline color="error" icon="warning">
     {{ errors }}
     </v-alert>
@@ -59,10 +62,11 @@
 
       <!-- MODAL -->
       <v-dialog v-model="dialog" persistent max-width="500px">
+      
         <v-btn slot="activator" fab bottom right color="teal" dark fixed >
           <v-icon>add</v-icon>
         </v-btn>
-
+          
         <v-form>
           <v-card>
             <v-card-title>
@@ -73,7 +77,13 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12>
-                    <v-text-field v-model="nombre" label="Nombre" prepend-icon="label" required></v-text-field>
+                    <v-text-field v-model="nombre" label="Nombre" prepend-icon="label" required :counter="20"
+                    :rules= "[
+                                          val => (val || '').length > 0 || 'Este campo es requerido',
+                                          val => val.length >= 10 || 'Minimo 10 caracteres',
+                                          val => val.length <= 20 || 'Maximo 20 caracteres'
+                                        ]"
+                    ></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-container>

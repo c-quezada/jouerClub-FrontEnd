@@ -100,7 +100,7 @@
             <v-list>
               <v-list-tile avatar>
                 <v-list-tile-avatar>
-                  <img v-bind:src="'https://www.jouer-club.cl/images/' +user_auth['avatar']">
+                  <img v-bind:src="'https://www.jouer-club.cl/images/profiles/profile.png'">
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title>{{ user_auth['alias'] }}</v-list-tile-title>
@@ -137,7 +137,7 @@ import axios from 'axios';
       dialog: false,
       drawer: null,
       items: [
-        { icon: 'dashboard', text: 'Centro Deportivo', to: 'my-sportfield' },
+        { icon: 'dashboard', text: 'Centro Deportivo', to: '/my-sportfield' },
         { icon: 'view_module', text: 'Canchas', to: '/' },
         { icon: 'extension', text: 'Servicios', to: '/sporfields/1/services' },
         {
@@ -146,8 +146,8 @@ import axios from 'axios';
           text: 'Más',
           model: true,
           children: [
-            { icon: 'chat_bubble', text: 'Enviar feedback' },
-            { icon: 'help', text: 'Ayuda' },
+            /* { icon: 'chat_bubble', text: 'Enviar feedback' },
+            { icon: 'help', text: 'Ayuda' }, */
             { icon: 'phonelink', text: 'Descarga la app', to: 'https://www.jouer-club.cl/' }
           ]
         }

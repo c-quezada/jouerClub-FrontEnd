@@ -98,8 +98,11 @@
                               </v-text-field>
                             </v-flex>
 
+                            <br><br><br>
                             <v-flex xs12>
-
+                              <div slot="label">
+                                  Estado del recurso <small>requerido *</small>
+                                </div>
                               <v-radio-group v-model="calificacion" :mandatory="false">
                                 <v-radio
                                   label="Malas Condiciones"
